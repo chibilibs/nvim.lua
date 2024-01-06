@@ -14,16 +14,45 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
+    --{
+    --    "rose-pine/neovim",
+    --    name = "rose-pine",
+    --    config = function()
+    --        require("rose-pine").setup({
+    --            disable_background = true,
+    --            disable_float_background = true,
+    --        })
+    --        vim.cmd("colorscheme rose-pine")
+    --    end,
+    --},
+
     {
-        "rose-pine/neovim",
-        name = "rose-pine",
+        "bluz71/vim-moonfly-colors",
+        name = "moonfly",
+        lazy = false,
+        priority = 1000,
         config = function()
-            require("rose-pine").setup({
-                disable_background = true,
-                disable_float_background = true,
-            })
-            vim.cmd("colorscheme rose-pine")
-        end,
+            vim.g.moonflyCursorColor = true
+            vim.g.moonflyItalics = true
+            vim.g.moonflyNormalFloat = true
+            vim.g.moonflyTerminalColors = true
+            vim.g.moonflyVirtualTextColor = true
+
+            vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(
+                vim.lsp.handlers.hover, {
+                    border = "single"
+                }
+            )
+            vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
+                vim.lsp.handlers.signatureHelp, {
+                    border = "single"
+                }
+            )
+            vim.diagnostic.config({ float = { border = "single" } })
+
+
+            vim.cmd("colorscheme moonfly")
+        end
     },
 
     {
@@ -45,6 +74,7 @@ require("lazy").setup({
             { "nvim-lua/plenary.nvim" },
         },
     },
+
     {
         "VonHeikemen/lsp-zero.nvim",
         branch = "v1.x",
@@ -69,6 +99,24 @@ require("lazy").setup({
     },
 
     {
+        "mrcjkb/rustaceanvim",
+        version = "^3",
+        ft = { "rust" },
+    },
+
+    { "RobertBrunhage/dart-tools.nvim" },
+
+    {
+        "akinsho/flutter-tools.nvim",
+        lazy = false,
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "stevearc/dressing.nvim", -- optional for vim.ui.select
+        },
+        config = true,
+    },
+
+    {
         "aserowy/tmux.nvim",
         config = function()
             return require("tmux").setup({
@@ -81,7 +129,6 @@ require("lazy").setup({
 
     {
         "nvimdev/guard.nvim",
-        -- Builtin configuration, optional
         dependencies = {
             "nvimdev/guard-collection",
         },

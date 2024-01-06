@@ -4,8 +4,10 @@ lsp.preset("recommended")
 
 lsp.ensure_installed({
     "rust_analyzer",
-    "elixirls",
     "lua_ls",
+    "tsserver",
+    "biome",
+    "clangd",
 })
 
 -- Fix Undefined global 'vim'
@@ -19,21 +21,58 @@ local cmp_mappings = lsp.defaults.cmp_mappings({
     ["<C-y>"] = cmp.mapping.confirm({ select = true }),
     ["<C-Space>"] = cmp.mapping.complete(),
 })
+local cmp_winhighlight = {
+    winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel",
+}
 
 cmp_mappings["<Tab>"] = nil
 cmp_mappings["<S-Tab>"] = nil
+
+cmp.setup({
+    window = {
+        completion = cmp.config.window.bordered(cmp_winhighlight),
+        documentation = cmp.config.window.bordered(cmp_winhighlight),
+    },
+    formatting = {
+        fields = { 'menu', 'abbr', 'kind' },
+        format = function(entry, item)
+            local menu_icon = {
+                nvim_lsp = 'λ',
+                vsnip = '⋗',
+                buffer = 'Ω',
+                path = '🖫',
+            }
+            item.menu = menu_icon[entry.source.name]
+            return item
+        end,
+    },
+})
+
 
 lsp.setup_nvim_cmp({
     mapping = cmp_mappings,
 })
 
 lsp.set_preferences({
-    suggest_lsp_servers = false,
+    suggest_lsp_servers = true,
     sign_icons = {
         error = "E",
         warn = "W",
         hint = "H",
         info = "I",
+    },
+})
+
+lsp.setup({
+    signs = true,
+    update_in_insert = true,
+    underline = true,
+    severity_sort = false,
+    float = {
+        border = 'rounded',
+        source = 'always',
+        header = '',
+        prefix = '',
     },
 })
 
