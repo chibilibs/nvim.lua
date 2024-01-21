@@ -5,8 +5,8 @@ lsp.preset("recommended")
 lsp.ensure_installed({
     "rust_analyzer",
     "lua_ls",
-    "tsserver",
-    "biome",
+    -- "tsserver",
+    -- "biome",
     "clangd",
 })
 

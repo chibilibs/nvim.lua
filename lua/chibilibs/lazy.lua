@@ -14,44 +14,19 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-    --{
-    --    "rose-pine/neovim",
-    --    name = "rose-pine",
-    --    config = function()
-    --        require("rose-pine").setup({
-    --            disable_background = true,
-    --            disable_float_background = true,
-    --        })
-    --        vim.cmd("colorscheme rose-pine")
-    --    end,
-    --},
-
     {
-        "bluz71/vim-moonfly-colors",
-        name = "moonfly",
-        lazy = false,
+        "catppuccin/nvim",
+        name = "catppuccin",
         priority = 1000,
         config = function()
-            vim.g.moonflyCursorColor = true
-            vim.g.moonflyItalics = true
-            vim.g.moonflyNormalFloat = true
-            vim.g.moonflyTerminalColors = true
-            vim.g.moonflyVirtualTextColor = true
-
-            vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(
-                vim.lsp.handlers.hover, {
-                    border = "single"
+            require("catppuccin").setup({
+                flavour = "mocha",
+                background = {
+                    light = "latte",
+                    dark = "mocha",
                 }
-            )
-            vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
-                vim.lsp.handlers.signatureHelp, {
-                    border = "single"
-                }
-            )
-            vim.diagnostic.config({ float = { border = "single" } })
-
-
-            vim.cmd("colorscheme moonfly")
+            })
+            vim.cmd.colorscheme "catppuccin"
         end
     },
 
@@ -99,35 +74,6 @@ require("lazy").setup({
     },
 
     {
-        "mrcjkb/rustaceanvim",
-        version = "^3",
-        ft = { "rust" },
-    },
-
-    { "RobertBrunhage/dart-tools.nvim" },
-
-    {
-        "akinsho/flutter-tools.nvim",
-        lazy = false,
-        dependencies = {
-            "nvim-lua/plenary.nvim",
-            "stevearc/dressing.nvim", -- optional for vim.ui.select
-        },
-        config = true,
-    },
-
-    {
-        "aserowy/tmux.nvim",
-        config = function()
-            return require("tmux").setup({
-                copy_sync = {
-                    redirect_to_clipboard = true,
-                },
-            })
-        end,
-    },
-
-    {
         "nvimdev/guard.nvim",
         dependencies = {
             "nvimdev/guard-collection",
@@ -152,6 +98,27 @@ require("lazy").setup({
             "nvim-lua/plenary.nvim",
             "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
             "MunifTanjim/nui.nvim",
+        },
+    },
+
+    { -- This plugin
+        "Zeioth/compiler.nvim",
+        cmd = { "CompilerOpen", "CompilerToggleResults", "CompilerRedo" },
+        dependencies = { "stevearc/overseer.nvim" },
+        opts = {},
+    },
+
+    { -- The task runner we use
+        "stevearc/overseer.nvim",
+        commit = "400e762648b70397d0d315e5acaf0ff3597f2d8b",
+        cmd = { "CompilerOpen", "CompilerToggleResults", "CompilerRedo" },
+        opts = {
+            task_list = {
+                direction = "bottom",
+                min_height = 25,
+                max_height = 25,
+                default_detail = 1
+            },
         },
     },
 })
